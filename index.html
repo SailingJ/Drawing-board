@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>画板</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <canvas id="xxx" >
+    </canvas>
+    <button id="eraser">橡皮檫</button>
+</body>
+<script>
+    var yyy = document.getElementById('xxx');
+    var context = yyy.getContext('2d');
+    context.fillStyle = 'black';
+    var using = false
+    var eraserEnable = false
+    var LastPoint = {'x':undefined, 'y':undefined}
+    canvasSize()
+    window.onresize = function(){
+        canvasSize()
+    }
+   //监听用户宽高
+   function canvasSize(){
+    var cilentWidth = document.documentElement.clientWidth
+    var cilentHeight = document.documentElement.clientHeight
+    xxx.width = cilentWidth
+    xxx.height = cilentHeight
+   }
+
+
+   //函数区
+    //画圆的函数,现在不用
+    function drawCircle(x,y,radius){
+        context.beginPath()
+        context.arc(x,y,radius,0,Math.PI*2)
+        context.fill()
+    }
+
+    //画线的函数
+    function drawLine(x1,y1,x2,y2){
+        context.beginPath()
+        context.moveTo(x1,y1)//起点
+        context.lineWidth = 5
+        context.lineTo(x2,y2)//终点
+        context.stroke()
+        context.closePath()
+        }     
+    
+
+
+    //按下去
+    xxx.onmousedown = function(dian){
+        var x = dian.clientX
+        var y = dian.clientY
+        using = true
+        if(eraserEnable){
+            context.clearRect(x-5,y-5,10,10)
+        }
+        else{
+            LastPoint = {'x':x, 'y':y}
+        }
+    }
+
+    //动
+    xxx.onmousemove = function(dong){
+        var x = dong.clientX
+        var y = dong.clientY
+        if(eraserEnable){ 
+            if(using){context.clearRect(x-5,y-5,10,10)}
+        }    
+        else{
+        if(using){
+            var newPoint = {'x':x, 'y':y}
+            drawLine(LastPoint.x,LastPoint.y,newPoint.x,newPoint.y)
+            LastPoint = newPoint
+            }
+        }
+       
+    }
+    //松开
+    xxx.onmouseup = function(song){
+        using = false
+        }
+    //橡皮檫
+    eraser.onclick = function(){
+    eraserEnable=!eraserEnable
+    }
+    
+ 
+    
+
+  
+</script>
+</html>

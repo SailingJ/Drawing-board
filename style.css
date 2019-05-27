@@ -1,0 +1,14 @@
+#xxx {
+    background:green;
+    display: block;
+    position: relative;
+}
+body{
+    margin: 0px;
+}
+#eraser{
+    position: absolute;
+    position:fixed;
+    left: 2%;
+    top: 2%;
+}
