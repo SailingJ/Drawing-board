@@ -50,8 +50,51 @@
         context.closePath()
         }     
     
+    if('ontouchstart' in document){
+    //触屏设备
+     //点下去
+     xxx.ontouchstart = function(touch){
+        console.log('摸了')
+        var x = touch.touches[0].clientX
+        var y = touch.touches[0].clientY
+        using = true
+        if(eraserEnable){
+            context.clearRect(x-5,y-5,10,10)
+        }
+        else{
+            LastPoint = {'x':x, 'y':y}
+        }
+    }
 
+    //边摸变动
+    xxx.ontouchmove = function(dong){
+        var x = dong.touches[0].clientX
+        var y = dong.touches[0].clientY
+        if(eraserEnable){ 
+            if(using){context.clearRect(x-5,y-5,10,10)}
+        }    
+        else{
+        if(using){
+            var newPoint = {'x':x, 'y':y}
+            drawLine(LastPoint.x,LastPoint.y,newPoint.x,newPoint.y)
+            LastPoint = newPoint
+            }
+        }
+    }
 
+    xxx.ontouchend = function(song){
+        console.log('不摸了不摸了')
+        xxx.onmouseup = function(song){
+        using = false
+        }
+    //橡皮檫
+    eraser.onclick = function(){
+    eraserEnable=!eraserEnable
+            }
+        }
+    }
+    else{
+    //PC端    
     //按下去
     xxx.onmousedown = function(dian){
         var x = dian.clientX
@@ -89,7 +132,12 @@
     eraser.onclick = function(){
     eraserEnable=!eraserEnable
     }
+    }
+
     
+    
+    //移动端
+   
  
     
 
